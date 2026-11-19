@@ -12,30 +12,48 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{--ink:#111;--muted:#5f6670;--navy:#1B3A5C;--line:#e4e6ea;--bg:#fff;--soft:#f6f7f9}
+  :root{--ink:#111;--muted:#545c66;--navy:#1B3A5C;--line:rgba(27,58,92,.09);
+    --t-hero:#EEF3F9;--t-about:#FAF6EE;--t-what:#EEF1F5;--t-approach:#E8F1FA;--t-contact:#F5F3EF;--t-foot:#E6ECF3}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;font-family:Montserrat,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--bg);
-    font-weight:400;line-height:1.75;font-size:1rem;-webkit-font-smoothing:antialiased}
+  body{margin:0;font-family:Montserrat,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;
+    font-weight:400;line-height:1.75;font-size:1rem;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   .wrap{max-width:1040px;margin:0 auto;padding:0 2rem}
   a{color:var(--navy)}
-  /* Hero watermark: large, very low-opacity navy owl bleeding off the right edge, behind header + hero */
-  body{position:relative;overflow-x:hidden}
-  .wm{position:absolute;z-index:-1;inset:0 0 auto 0;height:var(--wm-h,660px);overflow:hidden;pointer-events:none;
-    background:radial-gradient(110% 85% at 100% 0%,rgba(27,58,92,.06) 0%,rgba(27,58,92,0) 62%)}
-  .wm{-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
-  .wm::before{content:"";position:absolute;top:-24px;right:-28px;width:min(30vw,380px);aspect-ratio:191/389;
-    background:url("owl-watermark.svg") right top/contain no-repeat;opacity:.07}
-  header{border-bottom:1px solid rgba(27,58,92,.08);background:transparent}
+
+  /* Tinted bands, each with its own owl watermark (navy, ~5-8% opacity, varied placement) */
+  .band{position:relative;overflow:hidden;isolation:isolate}
+  .band::before{content:"";position:absolute;z-index:-1;pointer-events:none;background-repeat:no-repeat;background-size:contain}
+  .wm-half::before{background-image:url("owl-watermark.svg");aspect-ratio:191/389}
+  .wm-full::before{background-image:url("owl-full-watermark.svg");aspect-ratio:368.5/379.2}
+
+  /* Hero (header + intro): soft navy-tinted blue, large half-owl bleeding off the top right */
+  .top{background:radial-gradient(110% 90% at 100% 0%,rgba(27,58,92,.07) 0%,rgba(27,58,92,0) 60%),var(--t-hero)}
+  .top::before{top:-24px;right:-28px;width:min(30vw,380px);opacity:.075}
   .bar{display:flex;align-items:center;justify-content:space-between;height:84px}
+  .barline{border-bottom:1px solid var(--line)}
   .bar img{height:44px;width:auto;display:block}
   nav a{color:var(--muted);text-decoration:none;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;margin-left:2rem}
   nav a:hover{color:var(--navy)}
   .hero{padding-top:7.5rem;padding-bottom:7rem}
   .hero .logo{width:min(560px,100%);height:auto;display:block;margin-bottom:3.5rem}
   .hero h1{font-weight:300;font-size:clamp(1.5rem,2.8vw,2.1rem);line-height:1.45;letter-spacing:-.005em;margin:0;max-width:32ch;color:#2b2f35}
-    .rule{width:56px;height:2px;background:var(--navy);margin:2.5rem 0 0;border:0}
-  section{padding:6rem 0;border-top:1px solid var(--line);background:#fff}
+  .rule{width:56px;height:2px;background:var(--navy);margin:2.5rem 0 0;border:0}
+
+  section{padding:6rem 0}
+  /* About: warm cream, full owl rising from the bottom-left corner, cropped */
+  #about{background:var(--t-about)}
+  #about::before{left:-60px;bottom:-150px;width:min(28vw,340px);opacity:.06}
+  /* What we do: pale slate, half-owl rising from the bottom-right, cropped by the edge */
+  #what-we-do{background:var(--t-what)}
+  #what-we-do::before{right:-40px;top:30%;height:125%;width:auto;opacity:.055}
+  /* Our approach: soft sky, oversized full owl cropped off the left edge */
+  .approach{background:var(--t-approach)}
+  .approach::before{left:-170px;top:50%;translate:0 -50%;width:min(34vw,440px);opacity:.065}
+  /* Contact: light warm gray, small half-owl tucked into the bottom-right corner */
+  .contact{background:var(--t-contact)}
+  .contact::before{right:4%;bottom:-70px;width:min(14vw,170px);opacity:.08}
+
   .label{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--navy);font-weight:600;margin:0 0 1.5rem}
   .two{display:grid;grid-template-columns:1fr 2fr;gap:3rem}
   .two p{margin:0;font-size:1.08rem;color:#2b2f35;max-width:58ch}
@@ -44,11 +62,10 @@
   .items h3{font-size:1rem;font-weight:600;margin:0 0 .75rem;letter-spacing:.01em}
   .items h3::before{content:"";display:block;width:24px;height:2px;background:var(--navy);margin-bottom:1.25rem}
   .items p{margin:0;color:var(--muted);font-size:.95rem}
-  section.approach{background:var(--soft)}
   .approach blockquote{margin:0;font-weight:300;font-size:clamp(1.35rem,2.6vw,1.8rem);line-height:1.5;max-width:30ch;color:var(--ink)}
   .contact p{margin:0;color:var(--muted)}
   .contact a.email{display:inline-block;margin-top:1rem;font-size:1.25rem;font-weight:500;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
-  footer{border-top:1px solid var(--line);padding:2rem 0;font-size:.8rem;color:var(--muted)}
+  footer{background:var(--t-foot);border-top:1px solid var(--line);padding:2rem 0;font-size:.8rem;color:var(--muted)}
   footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1rem}
   footer img{height:28px;width:auto;opacity:.85}
   @media (max-width:760px){
@@ -59,37 +76,40 @@
     section{padding:4rem 0}
     .two{grid-template-columns:1fr;gap:0}
     .items{grid-template-columns:1fr;gap:2.25rem}
-    .wm{--wm-h:560px}
-    .wm::before{width:46vw;right:-14vw;top:-8px;opacity:.055}
+    .top::before{width:46vw;right:-14vw;top:-8px;opacity:.055}
+    #about::before{width:52vw;left:-14vw;bottom:-90px;opacity:.05}
+    #what-we-do::before{height:auto;width:44vw;right:-12vw;top:auto;bottom:-60px;opacity:.05}
+    .approach::before{width:62vw;left:-30vw;opacity:.055}
+    .contact::before{width:30vw;right:-6vw;bottom:-50px;opacity:.06}
   }
 </style>
 </head>
 <body>
-<div class="wm" aria-hidden="true"></div>
-<header>
-  <div class="wrap bar">
-    <a href="#top" aria-label="Uggla Pearl Properties home"><img src="owl-mark.svg" alt="Uggla Pearl Properties"></a>
-    <nav aria-label="Primary">
-      <a href="#about">About</a><a href="#what-we-do">What we do</a><a href="#contact">Contact</a>
-    </nav>
+<header class="top band wm-half" id="top">
+  <div class="barline">
+    <div class="wrap bar">
+      <a href="#top" aria-label="Uggla Pearl Properties home"><img src="owl-mark.svg" alt="Uggla Pearl Properties"></a>
+      <nav aria-label="Primary">
+        <a href="#about">About</a><a href="#what-we-do">What we do</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
   </div>
-</header>
-
-<main id="top">
   <div class="wrap hero">
     <img class="logo" src="logo-horizontal.svg" alt="Uggla Pearl Properties">
     <h1>A privately held real estate holding and management company based in Jackson, Tennessee.</h1>
     <hr class="rule">
   </div>
+</header>
 
-  <section id="about" aria-labelledby="about-label">
+<main id="main">
+  <section class="band wm-full" id="about" aria-labelledby="about-label">
     <div class="wrap two">
       <p class="label" id="about-label">About</p>
       <p>Uggla Pearl Properties owns and manages commercial and residential real estate with a long-term perspective. Our focus is the careful stewardship of each property: maintaining it well, operating it responsibly, and keeping it a dependable place to live, work, and gather.</p>
     </div>
   </section>
 
-  <section id="what-we-do" aria-labelledby="wwd-label">
+  <section class="band wm-half" id="what-we-do" aria-labelledby="wwd-label">
     <div class="wrap">
       <p class="label" id="wwd-label">What we do</p>
       <div class="items">
@@ -109,14 +129,14 @@
     </div>
   </section>
 
-  <section class="approach" aria-labelledby="approach-label">
+  <section class="band wm-full approach" aria-labelledby="approach-label">
     <div class="wrap two">
       <p class="label" id="approach-label">Our approach</p>
       <blockquote>Stewardship, integrity, and a long-term commitment to the communities we serve.</blockquote>
     </div>
   </section>
 
-  <section class="contact" id="contact" aria-labelledby="contact-label">
+  <section class="band wm-half contact" id="contact" aria-labelledby="contact-label">
     <div class="wrap two">
       <p class="label" id="contact-label">Contact</p>
       <div>
